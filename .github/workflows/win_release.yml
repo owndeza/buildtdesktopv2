@@ -119,7 +119,7 @@ jobs:
       # Two /MP2 compilers on heavy files exhaust 16 GB RAM (C1060).
       - name: Extend the pagefile.
         if: matrix.arch != 'arm64'
-        uses: al-cheb/configure-pagefile-action@v1.3
+        uses: al-cheb/configure-pagefile-action@v1.5
         with:
           minimum-size: 16GB
           maximum-size: 32GB
