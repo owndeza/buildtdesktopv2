@@ -1,6 +1,7 @@
 name: Windows.
 
 on:
+  workflow_dispatch:
   push:
     # Pushes to the canary or private-ci branches run their own workflows.
     branches-ignore:
@@ -54,8 +55,8 @@ jobs:
 
     strategy:
       matrix:
-        arch: [x64_x86, x64, arm64]
-        generator: ["", "Ninja Multi-Config"]
+        arch: [x64]
+        generator: ["Ninja Multi-Config"]
 
     env:
       UPLOAD_ARTIFACT: "true"
@@ -200,11 +201,7 @@ jobs:
 
           echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
 
-          API="-D TDESKTOP_API_TEST=ON"
-          if [ $GITHUB_REF == 'refs/heads/nightly' ]; then
-            echo "Use the open credentials."
-            API="-D TDESKTOP_API_ID=611335 -D TDESKTOP_API_HASH=d524b414d21f4d37f08684c1df41ac9c"
-          fi
+          API="-D TDESKTOP_API_ID=1 -D TDESKTOP_API_HASH=00000000000000000000000000000000"
           echo "TDESKTOP_BUILD_API=$API" >> $GITHUB_ENV
 
       - name: Free up some disk space.
@@ -223,8 +220,8 @@ jobs:
           -D CMAKE_CONFIGURATION_TYPES=Debug ^
           -D CMAKE_COMPILE_WARNING_AS_ERROR=ON ^
           -D CMAKE_MSVC_DEBUG_INFORMATION_FORMAT= ^
-          -D DESKTOP_APP_DISABLE_AUTOUPDATE=OFF ^
-          -D DESKTOP_APP_DISABLE_CRASH_REPORTS=OFF ^
+          -D DESKTOP_APP_DISABLE_AUTOUPDATE=ON ^
+          -D DESKTOP_APP_DISABLE_CRASH_REPORTS=ON ^
           %TDESKTOP_BUILD_DEFINE%
 
           cmake --build ..\out --config Debug --parallel
@@ -242,4 +239,4 @@ jobs:
         with:
           name: ${{ env.ARTIFACT_NAME }}
           path: artifact\
-          retention-days: 1
+          retention-days: 14
