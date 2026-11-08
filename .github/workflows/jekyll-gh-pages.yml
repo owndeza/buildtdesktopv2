@@ -37,7 +37,7 @@ jobs:
           destination: ./_site
           jekyll_config: _config_github_pages.yml
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
 
   # Deployment job
   deploy:
